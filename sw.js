@@ -1,4 +1,4 @@
-const CACHE_NAME = 'de-ipa-v3';
+const CACHE_NAME = 'de-ipa-v5';
 const urlsToCache = [
   './',
   './index.html',
