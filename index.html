@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Verwandeln Sie deutschen Text in phonetische Lautschrift">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DE IPA">
+    <title>Deutsch IPA Konverter</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Deutsch <span class="accent">IPA</span> Konverter</h1>
+            <p>Verwandeln Sie deutschen Text in phonetische Lautschrift.</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <textarea id="inputText" placeholder="Geben Sie hier Ihren deutschen Text ein..."></textarea>
+            </section>
+
+            <section class="controls">
+                <div class="settings-header">
+                    <button id="themeToggle" class="icon-btn" title="Thema umschalten">
+                        <svg id="sunIcon" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <button id="settingsBtn" class="icon-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1V15a2 2 0 0 1-2-2 2 2 0 0 1 2-2v-.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33 1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82 1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2v.09a1.65 1.65 0 0 0-1.51 1z">
+                            </path>
+                        </svg>
+                        Anzeige-Optionen
+                    </button>
+                </div>
+
+                <div id="settingsPanel" class="settings-panel hidden">
+                    <div class="setting-row">
+                        <div class="setting-group">
+                            <label>Position:</label>
+                            <select id="ipaPosition">
+                                <option value="above">Oben (Above)</option>
+                                <option value="under">Unten (Under)</option>
+                            </select>
+                        </div>
+                        <div class="setting-group">
+                            <label>Anzeigelevel:</label>
+                            <select id="ipaLevel">
+                                <option value="word">Wort (Word)</option>
+                                <option value="line">Zeile (Line)</option>
+                                <option value="paragraph">Absatz (Paragraph)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-group full-width">
+                            <label>Schriftgröße: <span id="fontSizeValue">100%</span></label>
+                            <input type="range" id="fontSizeSlider" min="80" max="200" value="100" step="5">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="output-section">
+                <div class="output-header">
+                    <button id="copyBtn" class="icon-btn" title="Ergebnis kopieren">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Kopieren
+                    </button>
+                </div>
+                <div id="outputContainer" class="output-container">
+                    <div class="placeholder">Die Ergebnisse erscheinen hier...</div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p><a href="https://github.com/vpnry/de-ipa-transcription">Code</a></p>
+        </footer>
+    </div>
+
+    <script type="module" src="app.js"></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+
+</html>
