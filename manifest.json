@@ -2,7 +2,7 @@
     "name": "Deutsch IPA Konverter",
     "short_name": "DE IPA",
     "description": "Verwandeln Sie deutschen Text in phonetische Lautschrift",
-    "start_url": "./index.html",
+    "start_url": "./",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#6366f1",
