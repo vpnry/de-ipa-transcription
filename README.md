@@ -11,17 +11,17 @@ A simple web application for converting German text into phonetic IPA (Internati
 ### Installation as PWA
 
 **Desktop (Chrome, Edge, Brave)**
-1. Visit the website
+1. Visit the website [de-ipa.pages.dev](https://de-ipa.pages.dev)
 2. Click the install icon (⊕) in the address bar
 3. Click "Install"
 
 **Mobile (iOS Safari)**
-1. Visit the website
+1. Visit the website [de-ipa.pages.dev](https://de-ipa.pages.dev)
 2. Tap the Share button
 3. Tap "Add to Home Screen"
 
 **Mobile (Android Chrome)**
-1. Visit the website
+1. Visit the website [de-ipa.pages.dev](https://de-ipa.pages.dev)
 2. Tap the menu (⋮)
 3. Tap "Add to Home Screen"
 
