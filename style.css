@@ -139,11 +139,11 @@ textarea::placeholder {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     color: var(--text-main);
-    padding: 8px 16px;
+    padding: 6px 12px;
     border-radius: 12px;
     cursor: pointer;
     font-family: inherit;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -151,13 +151,23 @@ textarea::placeholder {
 }
 
 .icon-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }
 
 .icon-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     transform: translateY(-2px);
+}
+
+#copyBtn {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+}
+
+#copyBtn svg {
+    width: 14px;
+    height: 14px;
 }
 
 .settings-panel {
