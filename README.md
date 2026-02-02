@@ -1,5 +1,7 @@
 # Deutsch IPA Konverter
 
+Online here: [de-ipa.pages.dev](https://de-ipa.pages.dev)
+
 A simple web application for converting German text into phonetic IPA (International Phonetic Alphabet) transcription using a comprehensive dictionary of over 360,000 words.
 
 ## ✨ Features
