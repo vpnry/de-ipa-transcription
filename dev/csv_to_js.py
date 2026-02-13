@@ -29,7 +29,7 @@ def convert_csv_to_js(csv_file, js_file):
 if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.abspath(__file__))
     input_csv = os.path.join(current_dir, "de_word_ipa.csv")
-    output_js = os.path.join(current_dir, "ipa_dict.js")
+    output_js = os.path.join(current_dir, "de_ipa_dict.js")
     
     if os.path.exists(input_csv):
         convert_csv_to_js(input_csv, output_js)

@@ -1,4 +1,7 @@
-import ipaDict from './ipa_dict.js';
+import ipaDict from './de_ipa_dict.js';
+import enIpaDict from './cmudict.js';
+
+const appLanguage = document.getElementById('appLanguage');
 
 const inputText = document.getElementById('inputText');
 const ipaPosition = document.getElementById('ipaPosition');
@@ -60,9 +63,11 @@ settingsBtn.addEventListener('click', () => {
 
 // Settings Persistence
 function initSettings() {
+    const savedLanguage = localStorage.getItem('appLanguage') || 'de';
     const savedPosition = localStorage.getItem('ipaPosition');
     const savedLevel = localStorage.getItem('ipaLevel');
     
+    appLanguage.value = savedLanguage;
     if (savedPosition) {
         ipaPosition.value = savedPosition;
     }
@@ -70,6 +75,12 @@ function initSettings() {
         ipaLevel.value = savedLevel;
     }
 }
+
+appLanguage.addEventListener('change', (e) => {
+    localStorage.setItem('appLanguage', e.target.value);
+    updatePlaceholder();
+    transcribe();
+});
 
 ipaPosition.addEventListener('change', (e) => {
     localStorage.setItem('ipaPosition', e.target.value);
@@ -90,10 +101,29 @@ inputText.addEventListener('input', () => {
     debounceTimer = setTimeout(transcribe, 300);
 });
 
+function updatePlaceholder() {
+    const lang = appLanguage.value;
+    if (lang === 'en') {
+        inputText.placeholder = 'Enter your English text here...';
+    } else {
+        inputText.placeholder = 'Geben Sie hier Ihren deutschen Text ein...';
+    }
+}
+
+function formatIpa(ipaObj, punctuation = '') {
+    if (ipaObj.alternatives.length > 0) {
+        const altText = ipaObj.alternatives.join(', ');
+        return `<span class="ipa-multi" data-tooltip="${altText}">${ipaObj.ipa}</span>${punctuation}`;
+    }
+    return ipaObj.ipa + punctuation;
+}
+
 function transcribe() {
     const text = inputText.value.trim();
     if (!text) {
-        outputContainer.innerHTML = '<div class="placeholder">Die Ergebnisse erscheinen hier...</div>';
+        const lang = appLanguage.value;
+        const msg = lang === 'en' ? 'Results will appear here...' : 'Die Ergebnisse erscheinen hier...';
+        outputContainer.innerHTML = `<div class="placeholder">${msg}</div>`;
         return;
     }
 
@@ -117,16 +147,27 @@ function transcribe() {
 }
 
 function getIpa(word, includeStress = true) {
+    const lang = appLanguage.value;
+    const currentDict = lang === 'en' ? enIpaDict : ipaDict;
+    
     // Clean word for lookup (remove punctuation, to lowercase)
     const clean = word.toLowerCase().replace(/[.,!?;:()]/g, '');
-    let ipa = ipaDict[clean] || word;
+    let rawResult = currentDict[clean] || word;
     
-    if (ipa !== word && !includeStress) {
-        // Remove stress marks ˈ and ˌ
-        ipa = ipa.replace(/[ˈˌ]/g, '');
+    let ipaList = [rawResult];
+    if (typeof rawResult === 'string' && rawResult.includes(',')) {
+        ipaList = rawResult.split(',').map(s => s.trim());
     }
     
-    return ipa;
+    if (ipaList[0] !== word && !includeStress) {
+        // Remove stress marks ˈ and ˌ
+        ipaList = ipaList.map(ipa => ipa.replace(/[ˈˌ]/g, ''));
+    }
+    
+    return {
+        ipa: ipaList[0],
+        alternatives: ipaList.slice(1)
+    };
 }
 
 function tokenize(text) {
@@ -140,8 +181,8 @@ function renderIpaOnly(para) {
     const ipaWords = words.map(w => {
         const punctuation = w.match(/[.,!?;:()]+$/) || [''];
         const cleanWord = w.replace(/[.,!?;:()]+$/, '');
-        const ipa = getIpa(cleanWord);
-        return ipa + punctuation[0];
+        const ipaObj = getIpa(cleanWord);
+        return formatIpa(ipaObj, punctuation[0]);
     });
     return `<div class="paragraph-block ipa-text-only">${ipaWords.join(' ')}</div>`;
 }
@@ -151,8 +192,8 @@ function renderInterlinearParagraph(para, position) {
     const ipaWords = words.map(w => {
         const punctuation = w.match(/[.,!?;:()]+$/) || [''];
         const cleanWord = w.replace(/[.,!?;:()]+$/, '');
-        const ipa = getIpa(cleanWord);
-        return ipa + punctuation[0];
+        const ipaObj = getIpa(cleanWord);
+        return formatIpa(ipaObj, punctuation[0]);
     });
 
     const blockClass = position === 'above' ? 'ipa-under' : 'ipa-above';
@@ -172,11 +213,12 @@ function renderWordByWord(para, position) {
     const wordHtml = words.map(w => {
         const punctuation = w.match(/[.,!?;:()]+$/) || [''];
         const cleanWord = w.replace(/[.,!?;:()]+$/, '');
-        const ipa = getIpa(cleanWord);
+        const ipaObj = getIpa(cleanWord);
+        const formattedIpa = formatIpa(ipaObj, punctuation[0]);
         
         return `
             <span class="word-pair ${wordClass}">
-                <span class="word-ipa">${ipa}${punctuation[0]}</span>
+                <span class="word-ipa">${formattedIpa}</span>
                 <span class="word-orig">${cleanWord}${punctuation[0]}</span>
             </span>
         `;
@@ -194,8 +236,8 @@ function renderLineByLine(para, position) {
         const ipaWords = words.map(w => {
             const punctuation = w.match(/[.,!?;:()]+$/) || [''];
             const cleanWord = w.replace(/[.,!?;:()]+$/, '');
-            const ipa = getIpa(cleanWord);
-            return ipa + punctuation[0];
+            const ipaObj = getIpa(cleanWord);
+            return formatIpa(ipaObj, punctuation[0]);
         });
         
         return `
@@ -256,3 +298,6 @@ copyBtn.addEventListener('click', async () => {
     }
 });
 
+
+initSettings();
+updatePlaceholder();

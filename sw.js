@@ -1,11 +1,12 @@
-const CACHE_NAME = 'de-ipa-v9';
+const CACHE_NAME = 'de-ipa-v10';
 const urlsToCache = [
   './',
   './index.html',
   './index', // Cloudflare Pages extensionless version
   './style.css',
   './app.js',
-  './ipa_dict.js',
+  './de_ipa_dict.js',
+  './cmudict.js',
   './manifest.json',
   './icon-192.png',
   './icon-512.png'

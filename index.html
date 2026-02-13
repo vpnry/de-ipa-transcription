@@ -72,14 +72,23 @@
                 <div id="settingsPanel" class="settings-panel hidden">
                     <div class="setting-row">
                         <div class="setting-group">
-                            <label>Position:</label>
+                            <label>Input text language:</label>
+                            <select id="appLanguage">
+                                <option value="de">Deutsch</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-group">
+                            <label>IPA Position:</label>
                             <select id="ipaPosition">
                                 <option value="above">Oben (Above)</option>
                                 <option value="under">Unten (Under)</option>
                             </select>
                         </div>
                         <div class="setting-group">
-                            <label>Anzeigelevel:</label>
+                            <label>Display Level:</label>
                             <select id="ipaLevel">
                                 <option value="line">Zeile (Line)</option>
                                 <option value="word">Wort (Word)</option>
@@ -89,7 +98,7 @@
                     </div>
                     <div class="setting-row">
                         <div class="setting-group full-width">
-                            <label>Schriftgröße: <span id="fontSizeValue">100%</span></label>
+                            <label>IPA Font Size: <span id="fontSizeValue">100%</span></label>
                             <input type="range" id="fontSizeSlider" min="80" max="200" value="100" step="5">
                         </div>
                     </div>
